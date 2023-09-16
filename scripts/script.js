@@ -27,42 +27,64 @@ function fetchWeatherData(selectedCity) {
     request.send()
 }
 
+function setText(element, text) {
+    document.getElementById(element).innerText = text
+}
 
 function displayWeatherData(weatherDataList) {
     // Populate with data
-    let responseContent = ''
-    weatherDataList.forEach(data => {
-        
-        responseContent += 
-        `<p>Type: <span id="type">${data.getType()}</span></p>
-        <p>Time: <span id="time">${data.getTime()}</span></p>
-        <p>Place: <span id="place">${data.getPlace()}</span></p>
-        <p>Value: <span id="value">${data.getValue()}</span> <span id="unit">${data.getUnit()}</span></p>`
-        
-        if (data.getPrecipitationType) {
-            responseContent +=
-                `<p>Precipitation Type: <span id="precipitationType">${data.getPrecipitationType()}</span></p>`
+    let temp, precipitation, wind, cloud
+    let temp_min = 1000
+    let temp_max = -1000
+    let last_day = new Date(weatherDataList[weatherDataList.length-1].getTime())
+    last_day.setUTCHours(0, 0, 0, 0)
+
+    for (let i = weatherDataList.length-1; i >= 0 ; i--) {
+        const data = weatherDataList[i];
+
+        let date = new Date(data.getTime())
+        date.setUTCHours(0, 0, 0, 0)
+        if (date.getTime() < last_day.getTime()) {
+            break;
         }
 
-        if (data.getDirection) {
-            responseContent +=
-                `<p>Direction: <span id="direction">${data.getDirection()}</span></p>`
+        switch (data.getType()) {
+            case 'temperature':
+                temp = data
+                if (temp_min > data.getValue()) {
+                    temp_min = data.getValue()
+                }
+                break
+            case 'precipitation':
+                precipitation = data
+                break
+            case 'wind speed':
+                wind = data
+                break
+            case 'cloud coverage':
+                cloud = data
+                break
+            default:
+                break
         }
-        responseContent += '<br/>'
-    })
-    
-    document.getElementById('response-content').innerHTML = responseContent
+    }
+
+    setText('temp_time', temp.getTime())
+    setText('temp_value', temp.getValue())
+    setText('temp_unit', temp.getUnit())
+    setText('temp_min', temp_min)
 }
 
-// Get references to the dropdown select and fetch button
+// Get references to the dropdown select
 var citySelect = document.getElementById('citySelect')
-var fetchButton = document.getElementById('fetchButton')
 
-// Attach a click event listener to the fetch button
-fetchButton.addEventListener('click', function () {
-    var selectedCity = citySelect.value
+// Attach a click event listener to the select
+citySelect.addEventListener("change", (event) => {
+    var selectedCity = event.target.value
     fetchWeatherData(selectedCity)
 })
+
+fetchWeatherData(citySelect.value)
 
 function mapData(data){
 
