@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Data</title>
+</head>
+<body>
+ 
+    <div style="text-align:center">
+    <h1>Weather Data</h1>
+    <div>
+        <label for="citySelect">Select a City:</label>
+        <select id="citySelect">
+            <option value="Aarhus">Aarhus</option>
+            <option value="Copenhagen">Copenhagen</option>
+            <option value="Horsens">Horsens</option>
+        </select>
+        <button id="fetchButton">Fetch Weather Data</button>
+    </div>
+
+    <div id="response-content">
+        <!-- Response content template -->
+        <p> Select a city to fetch weather data </p>
+    </div>
+
+    <!-- Link to the external JavaScript file -->
+    <script type= "module" src="../scripts/script.js"></script>
+</div>
+</body>
+</html>
+

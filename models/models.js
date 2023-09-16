@@ -11,63 +11,59 @@ function WeatherData(time, place, value, type, unit) {
     const event = Event(time, place)
 
     const getValue = () => value
+    const setValue = (_value) => value = _value
     const getType = () => type
     const getUnit = () => unit
+    const setUnit = (_unit) => unit = _unit
 
-    return { ...event, getValue, getType, getUnit }
+    return { ...event, getValue, getType, getUnit, setValue, setUnit }
 }
 
-function Temperature(time, place, value, type, unit) {
+function Temperature(weatherData) {
 
-    const weatherData = WeatherData(time, place, value, type, unit)
-    
     function convertToF() {
 
-        if (unit === 'C') {
-            value = (value * 9/5) + 32 
-            unit = 'F'
+        if (weatherData.getUnit() === 'C') {
+            weatherData.setValue((weatherData.getValue() * 9/5) + 32) 
+            weatherData.setUnit('F')
         }  
     }
 
-    function convertToC() {
-
-        if (unit === 'F') {
-            value = (value - 32) * 5/9
-            unit ='C'
+    function convertToC() { 
+        
+        if (weatherData.getUnit() === 'F') {
+            weatherData.setValue((weatherData.getValue() - 32) * 5/9) 
+            weatherData.setUnit('C')
         }   
     }
     return { ...weatherData, convertToF, convertToC }
 }
 
-function Precipitation(time, place, value, type, unit, precipitationType) {
-
-    const weatherData = WatherData(time, place, value, type, unit)
+function Precipitation(weatherData, precipitationType) {
 
     const getPrecipitationType = () => precipitationType
 
     function convertToInches() {
 
-        if (type === 'mm') {
-        value = value * 25.4 
-        unit = 'Inches'
-        }
+        if (weatherData.getUnit() === 'mm') {
+            weatherData.setValue(weatherData.getValue() * 25.4)
+            weatherData.setUnit('Inches')
+        }  
     }
 
     function convertToMm() {
 
-        if (type === 'Inches'){
-            value = value / 24.5 
-            unit = 'mm'
-        }
+        if (weatherData.getUnit() === 'Inches') {
+            weatherData.setValue(weatherData.getValue() / 25.4)
+            weatherData.setUnit('mm')
+        }  
 
     } 
 
    return {...weatherData, getPrecipitationType, convertToInches, convertToMm}
 }
 
-function Wind(time, place, value, type, unit, direction){
-
-    const weatherData = WeatherData(time, place, value, type, unit)
+function Wind(weatherData, direction){
 
     const getDirection = () => direction
 
@@ -75,9 +71,7 @@ function Wind(time, place, value, type, unit, direction){
 
 }
 
-function CloudCoverage(time, place, value, type, unit) {
-
-    const weatherData = WeatherData(time, place, value, type, unit)
+function CloudCoverage(weatherData) {
 
     return {...weatherData}
 }
@@ -190,8 +184,10 @@ function WindPrediction(time, place, max, min, type, unit, expected_directions) 
     return { ...prediction, matches, getExpectedDirections}
 
 }
-function CloudCoverage(time, place, max, min, type, unit){
+function CloudCoveragePrediction(time, place, max, min, type, unit){
     const prediction = WeatherPrediction(time, place, max, min, type, unit)
 
     return { ...prediction}
 }
+
+export { WeatherData, Temperature, Precipitation, Wind, CloudCoverage, WeatherPrediction, TemperaturePrediction, PrecipitationPrediction, WindPrediction, CloudCoveragePrediction }
