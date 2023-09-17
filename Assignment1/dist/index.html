@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Data</title>
+</head>
+<body>
+ 
+    <div style="text-align:center">
+    <h1>Weather Data</h1>
+    <div>
+        <label for="citySelect">Select a City:</label>
+        <select id="citySelect">
+            <option value="Aarhus">Aarhus</option>
+            <option value="Copenhagen">Copenhagen</option>
+            <option value="Horsens">Horsens</option>
+        </select>
+    </div>
+
+    <div class="latest-data">
+        <h1> Latest Weather Data </h1>
+        <div>
+            <h2>Temperature</h2>
+            <p>Latest value: <span id="temp_value"></span> <span id="temp_unit"></span></p>
+            <p>DateTime: <span id="temp_time"></span></p>
+        </div>
+        <div>
+            <h2>Wind</h2>
+            <p>Direction: <span id="wind_dir"></span></p>
+            <p>Latest value: <span id="wind_value"></span> <span id="wind_unit"></span></p>
+            <p>DateTime: <span id="wind_time"></span></p>
+        </div>
+        <div>
+            <h2>Precipitation</h2>
+            <p>Type: <span id="prec_type"></span></p>
+            <p>Latest value: <span id="prec_value"></span> <span id="prec_unit"></span></p>
+            <p>DateTime: <span id="prec_time"></span></p>
+        </div>
+        <div>
+            <h2>Cloud Coverage</h2>
+            <p>Latest value: <span id="cloud_value"></span> <span id="cloud_unit"></span>%</p>
+            <p>DateTime: <span id="cloud_time"></span></p>
+        </div>
+    </div>
+    <div class="previous-day-data">
+        <h1> Previous Day Data </h1>
+        <div>
+            <h2>Temperature</h2>
+            <p>Max: <span id="temp_max"></span><span id="temp_max_unit"></span></p>
+            <p>Min: <span id="temp_min"></span> <span id="temp_min_unit"></span></p>
+        </div>
+        <div>
+            <h2>Wind</h2>
+            <p>Average Speed: <span id="wind_avg"></span> <span id="wind_avg_unit"></span></p>
+        </div>
+        <div>
+            <h2>Precipitation</h2>
+            <p>Total precipitation: <span id="prec_total"></span> <span id="prec_total_unit"></span></p>
+        </div>
+    </div>
+    <!-- Link to the external JavaScript file -->
+    <script type= "module" src="main.js"></script>
+</div>
+</body>
+</html>
+

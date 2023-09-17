@@ -1,4 +1,5 @@
-import { Temperature, Precipitation, Wind, CloudCoverage, WeatherPrediction, WeatherData } from '../models/models.js'
+import _ from 'lodash'
+import { Temperature, Precipitation, Wind, CloudCoverage, WeatherData } from '../models/models.js'
 
 
 function fetchWeatherData(selectedCity) {
@@ -17,9 +18,8 @@ function fetchWeatherData(selectedCity) {
             var response = JSON.parse(request.responseText)
     //function to display the data we got - should be in separated script?
             let mapped = response.map(mapData)
-            displayWeatherData(mapped)
+            displayLatestData(mapped)
         } else {
-            document.getElementById('type').textContent = "Oops, something went wrong"
             console.error('Request failed with status:', request.status)
         }
     }
@@ -27,14 +27,62 @@ function fetchWeatherData(selectedCity) {
     request.send()
 }
 
-function setText(element, text) {
-    document.getElementById(element).innerText = text
+// Get references to the dropdown select
+var citySelect = document.getElementById('citySelect')
+
+// Attach a click event listener to the select
+citySelect.addEventListener("change", (event) => {
+    var selectedCity = event.target.value
+    fetchWeatherData(selectedCity)
+})
+
+// Call xml request
+fetchWeatherData(citySelect.value)
+
+function displayLatestData(weatherDataList) {
+    //find the last record
+    let last_data = weatherDataList.slice(-4)
+    
+    let temp, precipitation, wind, cloud
+
+    last_data.forEach(last_item => {
+        switch (last_item.getType()) {
+            case 'temperature':
+                temp = last_item
+            case 'precipitation':
+                precipitation = last_item
+            case 'wind speed':
+                wind = last_item
+            case 'cloud coverage':
+                cloud = last_item
+            default:
+                break
+        }
+    })
+
+    setText('temp_time', temp.getTime())
+    setText('temp_value', temp.getValue())
+    setText('temp_unit', temp.getUnit())
+
+    setText('wind_time', wind.getTime())
+    setText('wind_dir', wind.getDirection())
+    setText('wind_value', wind.getValue())
+
+    setText('prec_type', precipitation.getPrecipitationType())
+    setText('prec_time', precipitation.getTime())
+    setText('prec_value', precipitation.getValue())
+    setText('prec_unit', precipitation.getUnit())
+
+    setText('cloud_time', cloud.getTime())
+    setText('cloud_value', cloud.getValue())
+    
 }
 
-function displayWeatherData(weatherDataList) {
+
+function displayYesterdaysData(weatherDataList) {
     // Populate with data
-    let temp, precipitation, wind, cloud
-    let temp_min = 1000
+    let temp, precipitation, wind
+    //let temp_min = 1000
     let temp_max = -1000
     let last_day = new Date(weatherDataList[weatherDataList.length-1].getTime())
     last_day.setUTCHours(0, 0, 0, 0)
@@ -52,7 +100,7 @@ function displayWeatherData(weatherDataList) {
             case 'temperature':
                 temp = data
                 if (temp_min > data.getValue()) {
-                    temp_min = data.getValue()
+                 //   temp_min = data.getValue()
                 }
                 break
             case 'precipitation':
@@ -69,23 +117,8 @@ function displayWeatherData(weatherDataList) {
         }
     }
 
-    setText('temp_time', temp.getTime())
-    setText('temp_value', temp.getValue())
-    setText('temp_unit', temp.getUnit())
-    setText('temp_min', temp_min)
+    
 }
-
-// Get references to the dropdown select
-var citySelect = document.getElementById('citySelect')
-
-// Attach a click event listener to the select
-citySelect.addEventListener("change", (event) => {
-    var selectedCity = event.target.value
-    fetchWeatherData(selectedCity)
-})
-
-fetchWeatherData(citySelect.value)
-
 function mapData(data){
 
     let weatherData = WeatherData(data.time, data.place, data.value, data.type, data.unit)
@@ -101,4 +134,9 @@ function mapData(data){
         default:
             return weatherData;
     }
+}
+
+//help function
+function setText(element, text) {
+    document.getElementById(element).innerText = text
 }
