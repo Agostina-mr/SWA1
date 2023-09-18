@@ -11,9 +11,8 @@ fetch(url)
 })
 .then((data) => {
    let mapped = data.map(mapForecastData)
-   console.log(mapped[0])
-   console.log(mapped[0].getType())
-   document.getElementById('forecast-info').innerHTML = mapped[0].getType()
+   displayForecastData(mapped)
+  
 })
 
 .catch((error) => {
@@ -37,4 +36,26 @@ function mapForecastData(data){
         default:
             return forecastData;
     }
+}
+
+
+function displayForecastData(forecastData){
+
+    let content = ''
+
+    for (let i = 0; i < forecastData.length; i += 4) {
+        const timeInterval = forecastData.slice(i, i + 4);
+        content += `<p>Time: <span id="time"><b>${timeInterval[0].getTime()}</b></span></p>`
+       timeInterval.forEach(forecast => {
+        content += 
+        `<p>Type: <span id="type">${forecast.getType()}</span></p>
+        <p>Max: <span id="max">${forecast.getMax()}</span></p>
+        <p>Min: <span id="min">${forecast.getMin()}</span></p>
+        <p>Unit: <span id="unit">${forecast.getMin()}</span></p>
+       `
+       })
+       content += `</br>`
+      }
+      document.getElementById('forecast-info').innerHTML = content
+
 }
