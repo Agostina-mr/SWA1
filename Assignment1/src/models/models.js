@@ -102,9 +102,9 @@ function WeatherPrediction(time, place, max, min, type, unit){
     return {...event, getMax, getMin, getType, getUnit, matches}
 }
 
-function TemperaturePrediction(time, place, max, min, type, unit){
+function TemperaturePrediction(weatherPrediction){
 
-    const prediction = WeatherPrediction(time, place, max, min, type, unit)
+    const prediction = weatherPrediction
 
     function convertToF() {
 
@@ -125,9 +125,9 @@ function TemperaturePrediction(time, place, max, min, type, unit){
 
 }
 
-function PrecipitationPrediction(time, place, max, min, type, unit, expectedTypes){
+function PrecipitationPrediction(weatherprediction, expectedTypes){
 
-    const prediction = WeatherPrediction(time, place, max, min, type, unit)
+    const prediction = weatherprediction
 
     const getExpectedtypes = () => expectedTypes
 
@@ -163,9 +163,9 @@ function PrecipitationPrediction(time, place, max, min, type, unit, expectedType
     return { ...prediction, convertToF, convertToC, matches, getExpectedtypes}
 }
 
-function WindPrediction(time, place, max, min, type, unit, expected_directions) {
+function WindPrediction(weatherPrediction, expected_directions) {
 
-    const prediction = WeatherPrediction(time, place, max, min, type, unit)
+    const prediction = weatherPrediction
     const getExpectedDirections = () => expected_directions
 
     function matches(weatherData = {}) {
@@ -184,10 +184,9 @@ function WindPrediction(time, place, max, min, type, unit, expected_directions) 
     return { ...prediction, matches, getExpectedDirections}
 
 }
-function CloudCoveragePrediction(time, place, max, min, type, unit){
-    const prediction = WeatherPrediction(time, place, max, min, type, unit)
+function CloudCoveragePrediction(weatherPrediction){
 
-    return { ...prediction}
+    return { ...weatherPrediction}
 }
 
 export { WeatherData, Temperature, Precipitation, Wind, CloudCoverage, WeatherPrediction, TemperaturePrediction, PrecipitationPrediction, WindPrediction, CloudCoveragePrediction }

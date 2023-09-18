@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post Data</title>
+</head>
+<body>
+    <h1>Post Data</h1>
+    <form id="data-post">
+        <fieldset>
+            <legend>Data Entry</legend>
+            
+            <!-- Data Entry for Temperature -->
+            <label for="temperature_type">Type: Temperature</label>
+            <input type="hidden" name="data[0][type]" value="temperature">
+            <br>
+            <label for="temperature_time">Time:</label>
+            <input type="text" name="data[0][time]" id="temperature_time" required>
+            <br>
+            <label for="temperature_place">Place:</label>
+            <input type="text" name="data[0][place]" id="temperature_place" required>
+            <br>
+            <label for="temperature_value">Value:</label>
+            <input type="number" name="data[0][value]" id="temperature_value" required>
+            <br>
+            <label for="temperature_unit">Unit:</label>
+            <input type="text" name="data[0][unit]" id="temperature_unit" required>
+            <br><br>
+            
+            <!-- Data Entry for Precipitation -->
+            <label for="precipitation_type">Type: Precipitation</label>
+            <input type="hidden" name="data[1][type]" value="precipitation">
+            <br>
+            <label for="precipitation_time">Time:</label>
+            <input type="text" name="data[1][time]" id="precipitation_time" required>
+            <br>
+            <label for="precipitation_place">Place:</label>
+            <input type="text" name="data[1][place]" id="precipitation_place" required>
+            <br>
+            <label for="precipitation_value">Value:</label>
+            <input type="number" name="data[1][value]" id="precipitation_value" required>
+            <br>
+            <label for="precipitation_unit">Unit:</label>
+            <input type="text" name="data[1][unit]" id="precipitation_unit" required>
+            <br>
+            <label for="precipitation_precipitation_type">Precipitation Type:</label>
+            <input type="text" name="data[1][precipitation_type]" id="precipitation_precipitation_type" required>
+            <br><br>
+            
+            <!-- Data Entry for Wind Speed -->
+            <label for="wind_speed_type">Type: Wind Speed</label>
+            <input type="hidden" name="data[2][type]" value="wind speed">
+            <br>
+            <label for="wind_speed_time">Time:</label>
+            <input type="text" name="data[2][time]" id="wind_speed_time" required>
+            <br>
+            <label for="wind_speed_place">Place:</label>
+            <input type="text" name="data[2][place]" id="wind_speed_place" required>
+            <br>
+            <label for="wind_speed_value">Value:</label>
+            <input type="number" name="data[2][value]" id="wind_speed_value" required>
+            <br>
+            <label for="wind_speed_unit">Unit:</label>
+            <input type="text" name="data[2][unit]" id="wind_speed_unit" required>
+            <br>
+            <label for="wind_speed_direction">Direction:</label>
+            <input type="text" name="data[2][direction]" id="wind_speed_direction" required>
+            <br><br>
+            
+            <!-- Data Entry for Cloud Coverage -->
+            <label for="cloud_coverage_type">Type: Cloud Coverage</label>
+            <input type="hidden" name="data[3][type]" value="cloud coverage">
+            <br>
+            <label for="cloud_coverage_time">Time:</label>
+            <input type="text" name="data[3][time]" id="cloud_coverage_time" required>
+            <br>
+            <label for="cloud_coverage_place">Place:</label>
+            <input type="text" name="data[3][place]" id="cloud_coverage_place" required>
+            <br>
+            <label for="cloud_coverage_value">Value:</label>
+            <input type="number" name="data[3][value]" id="cloud_coverage_value" required>
+            <br>
+            <label for="cloud_coverage_unit">Unit:</label>
+            <input type="text" name="data[3][unit]" id="cloud_coverage_unit" required>
+            <br><br>
+            
+        </fieldset>
+        <input type="button" value="Send weather data" onclick="submitData()">
+        <script type= "module" src="../scripts/postdata.js"></script>        
+    </form>
+</body>
+</html>
