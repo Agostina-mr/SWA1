@@ -1,7 +1,10 @@
 import {WeatherPrediction, TemperaturePrediction, PrecipitationPrediction, WindPrediction, CloudCoveragePrediction} from '../models/models.js'
-const url = 'http://localhost:8080/forecast'
 
-fetch(url)
+// Get references to the dropdown select
+let citySelect = document.getElementById('citySelect')
+
+async function fetchForecast(selectedCity){
+fetch(`http://localhost:8080/forecast/${selectedCity}`)
 .then((response) => {
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`)
@@ -18,9 +21,16 @@ fetch(url)
 .catch((error) => {
     console.error('Fetch Error:', error);
 })
+}
 
+// Attach a click event listener to the select
+citySelect.addEventListener("change", (event) => {
+    var selectedCity = event.target.value
+    fetchForecast(selectedCity)
+})
 
-
+// Call fetch while opening the page
+fetchForecast(citySelect.value)
 function mapForecastData(data){
 
     let forecastData = WeatherPrediction(data.time, data.place, data.from, data.to, data.type, data.unit)

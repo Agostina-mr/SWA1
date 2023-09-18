@@ -1,13 +1,12 @@
-import _ from 'lodash'
 import { Temperature, Precipitation, Wind, CloudCoverage, WeatherData } from '../models/models.js'
 
 
 function fetchWeatherData(selectedCity) {
     
-    var request = new XMLHttpRequest()
+    let request = new XMLHttpRequest()
 
     // Define the URL with the selected city
-    var url = `http://localhost:8080/data/${selectedCity}`
+    let url = `http://localhost:8080/data/${selectedCity}`
 
     // Configure the GET request
     request.open('GET', url, true)
