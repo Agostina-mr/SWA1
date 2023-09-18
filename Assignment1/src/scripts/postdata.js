@@ -1,17 +1,4 @@
-
-// Example POST method implementation:
-async function postData(data = {}) {
-  // Default options are marked with *
-  const response = await fetch('http://localhost:8080/data', {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data), // body data type must match "Content-Type" header
-  })
-  return response.json()
-}
-
+import { setUseFetch, postData } from './server.js'
 
 function submitData() {
   let jsonData = [{"type": "temperature",
@@ -37,13 +24,18 @@ function submitData() {
   "value": readFromForm('cloud_coverage_value'),
   "unit": readFromForm('cloud_coverage_unit')}]
 
-  postData(jsonData).then((response) => {
-    console.log("Response = " + response)
+  postData('http://localhost:8080/data', jsonData).then((response) => {
+    console.log("Response", response)
   })
 }
 
 let submitButton = document.getElementById('submit-button')
 submitButton.addEventListener("click", () => submitData())
+
+const fetchCheckbox = document.getElementById('fetch-checkbox')
+fetchCheckbox.addEventListener("change", (event) => {
+    setUseFetch(event.target.checked)
+})
 
 function readFromForm(element){
   return (document.getElementById(element)).value

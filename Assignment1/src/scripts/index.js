@@ -1,39 +1,36 @@
 import { Temperature, Precipitation, Wind, CloudCoverage, WeatherData } from '../models/models.js'
+import { setUseFetch, getData } from './server.js'
 
 
 function fetchWeatherData(selectedCity) {
-    
-    let request = new XMLHttpRequest()
 
     // Define the URL with the selected city
     let url = `http://localhost:8080/data/${selectedCity}`
 
-    // Configure the GET request
-    request.open('GET', url, true)
-
-    // callback function to handle the response
-    request.onload = function () {
-        if (request.status === 200) {
-            var response = JSON.parse(request.responseText)
-    //function to display the data we got - should be in separated script?
-            let mapped = response.map(mapData)
+    getData(url)
+        .then((data) => {
+            let mapped = data.map(mapData)
             displayLatestData(mapped)
             displayYesterdaysData(mapped)
-        } else {
-            console.error('Request failed with status:', request.status)
-        }
-    }
-
-    request.send()
+        })
+        .catch((error) => {
+            console.error('getData Error:', error);
+        })
 }
 
 // Get references to the dropdown select
-var citySelect = document.getElementById('citySelect')
+const citySelect = document.getElementById('citySelect')
 
 // Attach a click event listener to the select
 citySelect.addEventListener("change", (event) => {
-    var selectedCity = event.target.value
+    const selectedCity = event.target.value
     fetchWeatherData(selectedCity)
+})
+
+const fetchCheckbox = document.getElementById('fetch-checkbox')
+fetchCheckbox.addEventListener("change", (event) => {
+    setUseFetch(event.target.checked)
+    fetchWeatherData(citySelect.value)
 })
 
 // Call xml request
@@ -41,8 +38,8 @@ fetchWeatherData(citySelect.value)
 
 function displayLatestData(weatherDataList) {
     //find the last record
-    let last_data = weatherDataList.slice(-4)
-    
+    let last_data = weatherDataList.slice(-16)
+
     let temp, precipitation, wind, cloud
 
     last_data.forEach(last_item => {
@@ -63,7 +60,7 @@ function displayLatestData(weatherDataList) {
     populateLastestData(temp, precipitation, wind, cloud)
 }
 
-function populateLastestData(temp, precipitation, wind, cloud){
+function populateLastestData(temp, precipitation, wind, cloud) {
 
     setText('temp_time', temp.getTime())
     setText('temp_value', temp.getValue())
@@ -91,10 +88,10 @@ function displayYesterdaysData(weatherDataList) {
     let wind_avg = 0
     let temp_min = 1000
     let temp_max = -1000
-    let last_day = new Date(weatherDataList[weatherDataList.length-1].getTime())
+    let last_day = new Date(weatherDataList[weatherDataList.length - 1].getTime())
     last_day.setUTCHours(0, 0, 0, 0)
 
-    for (let i = weatherDataList.length-1; i >= 0 ; i--) {
+    for (let i = weatherDataList.length - 1; i >= 0; i--) {
         const data = weatherDataList[i];
 
         let date = new Date(data.getTime())
@@ -121,7 +118,7 @@ function displayYesterdaysData(weatherDataList) {
                 wind = data
                 wind_record += 1
                 wind_record_val += data.getValue()
-                wind_avg = (wind_record_val/wind_record)
+                wind_avg = (wind_record_val / wind_record)
                 break
             default:
                 break
@@ -136,10 +133,10 @@ function displayYesterdaysData(weatherDataList) {
     setText('wind_avg_unit', wind.getUnit())
     setText('prec_total', prec_total.toFixed(2))
     setText('prec_total_unit', precipitation.getUnit())
-    
+
 }
 
-function mapData(data){
+function mapData(data) {
 
     let weatherData = WeatherData(data.time, data.place, data.value, data.type, data.unit)
     switch (data.type) {
