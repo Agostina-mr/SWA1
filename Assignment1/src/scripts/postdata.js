@@ -26,3 +26,5 @@ function submitData() {
   })
 }
 
+let submitButton = document.getElementById('submit-button')
+submitButton.addEventListener("click", () => submitData())
