@@ -38,11 +38,10 @@ fetchWeatherData(citySelect.value)
 
 function displayLatestData(weatherDataList) {
     //find the last record
-    let last_data = weatherDataList.slice(-16)
 
     let temp, precipitation, wind, cloud
 
-    last_data.forEach(last_item => {
+    weatherDataList.forEach(last_item => {
         switch (last_item.getType()) {
             case 'temperature':
                 temp = last_item
@@ -53,7 +52,7 @@ function displayLatestData(weatherDataList) {
             case 'cloud coverage':
                 cloud = last_item
             default:
-                break
+                last_item
         }
     })
 
