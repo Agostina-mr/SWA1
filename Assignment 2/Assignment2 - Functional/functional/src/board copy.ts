@@ -109,8 +109,9 @@ export function move<T>(generator: Generator<T>, board: Board<T>, first: Positio
         let matches = getMatches(board)
 
         if (matches.length) {
-            board = refill(board, matches)
-            
+            board = removeMatches(board, matches);
+            board = refill(board)
+
             effects.push(...matches.map(match => { return { kind: 'Match', match } }))
             effects.push({ kind: 'Refill' })
         }
@@ -121,17 +122,31 @@ export function move<T>(generator: Generator<T>, board: Board<T>, first: Positio
     }
 }
 
+function removeMatches<T>(board: Board<T>, matchs: Match<T>[]) : Board<T> {
+    let allPositions = matchs.flatMap(match => match.positions)
+
+    let tiles = board.tiles.map((row, rowIndex) => {
+        return row.map((tile, colIndex) => {
+            if (allPositions.some(position => position.row === rowIndex && position.col === colIndex)) {
+                return undefined
+            }
+            return tile
+        })
+    })
+
+    return { ...board, tiles }
+}
+
 function belongsToSameRowOrColumn(first: Position, second: Position): boolean {
     return first.row === second.row || first.col === second.col
 }
 
-function refill<T>(board: Board<T>, matches: Match<T>[]): Board<T> {
-    let allPositions = matches.flatMap(match => match.positions)
+function refill<T>(board: Board<T>): Board<T> {
     let tiles = board.tiles.map(row => row.slice())
 
     tiles.forEach((row, rowIndex) => {
-        row.forEach((_, colIndex) => {
-            if (allPositions.some(pos => pos.row === rowIndex && pos.col === colIndex)) {
+        row.forEach((tile, colIndex) => {
+            if (tile === undefined) {
                 for (let x = rowIndex; x > 0; x--) {
                     tiles[x][colIndex] = tiles[x - 1][colIndex]
                 }

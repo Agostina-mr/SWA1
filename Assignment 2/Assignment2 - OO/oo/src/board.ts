@@ -110,16 +110,12 @@ export class Board<T> {
                 if (tiles[x][y] === match.matched) {
                     match.positions.push({ row: x, col: y })
                 } else {
-                    if (match.positions.length > 2) {
-                        allMatches.push(match)
-                    }
+                    allMatches.push(match)
                     match = { matched: tiles[x][y], positions: [{ row: x, col: y }] }
                 }
             }
 
-            if (match.positions.length > 2) {
-                allMatches.push(match)
-            }
+            allMatches.push(match)
         }
 
         for (let y = 0; y < this.width; y++) {
@@ -130,19 +126,15 @@ export class Board<T> {
                 if (tiles[x][y] === match.matched) {
                     match.positions.push({ row: x, col: y })
                 } else {
-                    if (match.positions.length > 2) {
-                        allMatches.push(match)
-                    }
+                    allMatches.push(match)
                     match = { matched: tiles[x][y], positions: [{ row: x, col: y }] }
                 }
             }
 
-            if (match.positions.length > 2) {
-                allMatches.push(match)
-            }
+            allMatches.push(match)
         }
-        console.log(allMatches)
-        return allMatches
+        
+        return allMatches.filter(match => match.positions.length >= 3)
     }
 
     move(first: Position, second: Position) {
