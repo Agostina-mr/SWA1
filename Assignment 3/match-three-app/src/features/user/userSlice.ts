@@ -1,4 +1,4 @@
-import { createSlice, current } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { User } from '../../models/user'
 import { loginThunk, logoutThunk, signUpThunk } from '../../middleware/thunks'
 
@@ -12,24 +12,32 @@ export const userSlice = createSlice({
     initialState: {} as UserState,
     reducers: {
         logout: (state) => {
-            return {...state, user: {} as User}
+            return { ...state, user: {} as User }
         }
     },
     extraReducers: (builder) => {
         builder.addCase(signUpThunk.fulfilled, (state) => {
-            return {...state, status: 'Fulfilled'}
+            return { ...state, status: 'Fulfilled' }
         })
         builder.addCase(signUpThunk.rejected, (state) => {
-            return {...state, status: 'Rejected'}
+            return { ...state, status: 'Rejected' }
         })
         builder.addCase(signUpThunk.pending, (state) => {
-            return {...state, status: 'Pending'}
+            return { ...state, status: 'Pending' }
         })
         builder.addCase(loginThunk.fulfilled, (state, action) => {
-            return {...state, status: 'logged in', user: action.payload}
+            return {
+                ...state, status: 'logged in',
+                user: {
+                    username: action.payload.request.username,
+                    id: action.payload.response.id,
+                    admin: action.payload.response.admin,
+                    token: action.payload.response.token
+                } as User
+            }
         })
         builder.addCase(logoutThunk.fulfilled, (state) => {
-            return {...state, status: 'logged out', user: {} as User}
+            return { ...state, status: 'logged out', user: {} as User }
         })
     }
 })

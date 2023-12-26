@@ -9,7 +9,7 @@ export const signUpThunk = createAsyncThunk('signUp', async (user: User) =>
 
 export const loginThunk = createAsyncThunk('login', async (user: User) => 
 {
-       return await client.login(user)
+       return {request: user, response: await client.login(user)}
 })
 
 export const logoutThunk = createAsyncThunk('logout', async (token: string) => 
