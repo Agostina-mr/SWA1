@@ -1,10 +1,10 @@
 import React from 'react';
 import './App.css';
-import { SignUp } from './features/user/SignUp';
+import { LandingPage } from './features/user/LandingPage'
 
 function App() {
   return (
-      <SignUp/>
+      <LandingPage/>
   );
 }
 

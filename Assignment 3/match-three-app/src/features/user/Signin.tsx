@@ -3,12 +3,11 @@ import { useSelector } from 'react-redux'
 import store, { State } from '../../app/store'
 import { loginThunk, logoutThunk, signUpThunk } from '../../middleware/thunks';
 
-export const SignUp = () => {
+export const Signin = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const status = useSelector((state : State) => state.userState.status)
     const token = useSelector((state : State) => state.userState.user?.token)
-
 
     return (       
         <div>
@@ -43,5 +42,5 @@ export const SignUp = () => {
         </div>
         </div>
     )
-}
 
+}
