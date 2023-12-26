@@ -3,4 +3,5 @@ export type User = {
     admin?: boolean
     username: string
     password: string
+    token?: string
 }

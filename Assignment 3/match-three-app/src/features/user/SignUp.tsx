@@ -1,19 +1,16 @@
 import React, { useState } from 'react'
-import store from '../../app/store'
-import { signUpThunk } from '../../middleware/thunks';   
-
+import { useSelector } from 'react-redux'
+import store, { State } from '../../app/store'
+import { loginThunk, logoutThunk, signUpThunk } from '../../middleware/thunks';
 
 export const SignUp = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [statusLabel, setStatusLabel] = useState('')
-    store.subscribe(() => {
-        const state = store.getState()
-        setStatusLabel(state.user.statusLabel)
-    })
+    const status = useSelector((state : State) => state.userState.status)
+    const token = useSelector((state : State) => state.userState.user?.token)
 
-    return (
-        
+
+    return (       
         <div>
             <div>
                 <input
@@ -36,8 +33,15 @@ export const SignUp = () => {
                 <button onClick={() => store.dispatch(signUpThunk({username, password}))}>Sign Up</button>
             </div>
             <div>
-                <label>Status: {statusLabel}</label>
+                <button onClick={() => store.dispatch(loginThunk({username, password}))}>Login</button>
             </div>
+            <div>
+                <button onClick={() => store.dispatch(logoutThunk(token))}>Logout</button>
+            </div>
+            <div>
+            <label> Status: {status}</label>
+        </div>
         </div>
     )
 }
+
