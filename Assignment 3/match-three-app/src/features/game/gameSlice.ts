@@ -1,47 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { Board, Generator } from '../../models/board'
+import { createSlice, current } from '@reduxjs/toolkit'
+import { Board, create, move } from '../../models/board'
 
 export type GameState = {
-    board: Board<string>
+    board: Board
 }
 
-const values = 'AABCDABABCDEFCDEFEFABCDEFBAABCDEABCDEFFAABCDEFBCAABCDEFABCDEFBCAABCDEFBCABCDEFDEFDABCDEFEFABCABCDEFABCDEFDEFDEFABCDEFBABCDEFCABCDEFDEFCDEF'.split('')
 export const gameSlice = createSlice({
     name: 'game',
-    initialState: { board: create(generator(values), 10, 10) } as GameState,
+    initialState: { board: {} } as GameState,
     reducers: {
         initializeBoard: (state) => {
-            let board = create(generator(values), 5, 5)
+            let board = create(5, 5)
             return {...state, board}
+        },
+        moveTiles: (state, action) => {
+            console.log(action.payload)
+            let result = move( action.payload.board, action.payload.first, action.payload.second )
+            let board = result.board
+            let newState = {...state, board}    
+            console.log(newState)
+            return {...state, board }
         }
-
-
     }
 })
 
-export const { initializeBoard } = gameSlice.actions
+export const { initializeBoard, moveTiles } = gameSlice.actions
 export default gameSlice.reducer
-
-// helpers
-
-function generator<T>(values: T[]): Generator<T> {
-    let index = 0
-    return {
-        next: () => {
-            let value = values[index]
-            index = (index + 1) % values.length
-            return value
-        }
-    }
-}
-export function create<T>(generator: Generator<T>, width: number, height: number): Board<T> {
-    let tiles = createTiles(generator, width, height)
-    return { generator, width, height, tiles }
-}
-function createTiles<T>(generator: Generator<T>, width: number, height: number): T[][] {
-    return Array.from({ length: height }, () => createRow(generator, width));
-}
-
-function createRow<T>(generator: Generator<T>, width: number): T[] {
-    return Array.from({ length: width }, () => generator.next());
-}
