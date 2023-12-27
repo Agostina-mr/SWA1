@@ -1,18 +1,19 @@
 import React, { useState } from 'react' 
 import { useSelector, useDispatch } from 'react-redux' 
-import store, { State } from '../../app/store' 
+import { State } from '../../app/store' 
 import { initializeBoard, moveTiles } from './gameSlice' 
 
 export const BoardComponent = () => {
   const dispatch = useDispatch() 
   const board = useSelector((state: State) => state.gameState.board) 
+  const wasValidMove = useSelector((state: State) => state.gameState.wasValidMove)
   const [clickedTiles, setClickedTiles] = useState<{ row: number,  col: number }[]>([]) 
 
   const handleTileClick = (row: number, col: number) => {
     const newClickedTiles = [...clickedTiles] 
     const tilePosition = { row, col } 
 
-    if (isTileClicked(tilePosition)) {
+    if ( isTileClicked(tilePosition)) {
       const index = newClickedTiles.findIndex((pos) => pos.row === row && pos.col === col) 
       newClickedTiles.splice(index, 1) 
     } else {
@@ -28,7 +29,6 @@ export const BoardComponent = () => {
   } 
 
   const isTileClicked = (position: { row: number,  col: number }) => {
-    // Fix the comparison to check both row and column
     return clickedTiles.some((pos) => pos.row === position.row && pos.col === position.col) 
   } 
 
@@ -37,7 +37,7 @@ export const BoardComponent = () => {
       <button onClick={() => dispatch(initializeBoard())}>New Game</button>
       <table>
         <tbody>
-          {board.tiles?.map((row, rowIndex) => (
+          { board.tiles?.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((tile, colIndex) => (
                 <td
@@ -61,6 +61,9 @@ export const BoardComponent = () => {
           ))}
         </tbody>
       </table>
+      {
+        wasValidMove ? <div>Valid Move</div> : <div>Invalid Move!</div>
+      }
     </div>
   ) 
 } 

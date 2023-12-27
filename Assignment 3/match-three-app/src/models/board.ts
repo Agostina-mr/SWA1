@@ -92,7 +92,7 @@ export function move(board: Board, first: Position, second: Position): MoveResul
         else
         {
             console.log("no more matches")
-            console.log(board )
+            console.log('ONE',effects )
             return { board, effects }
         }
     }
