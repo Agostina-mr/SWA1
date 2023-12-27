@@ -1,12 +1,14 @@
-import React, { useState } from 'react' 
+import React, { useEffect, useState } from 'react' 
 import { useSelector, useDispatch } from 'react-redux' 
 import { State } from '../../app/store' 
 import { initializeBoard, moveTiles } from './gameSlice' 
+import { delay } from '@reduxjs/toolkit/dist/utils'
 
 export const BoardComponent = () => {
   const dispatch = useDispatch() 
   const board = useSelector((state: State) => state.gameState.board) 
   const wasValidMove = useSelector((state: State) => state.gameState.wasValidMove)
+  const moves = useSelector((state: State) => state.gameState.moves)
   const [clickedTiles, setClickedTiles] = useState<{ row: number,  col: number }[]>([]) 
 
   const handleTileClick = (row: number, col: number) => {
@@ -20,8 +22,14 @@ export const BoardComponent = () => {
       newClickedTiles.push(tilePosition) 
       if (newClickedTiles.length === 2) {
         // Dispatch the moveTiles action with the latest board state
-        dispatch(moveTiles({ board, first: newClickedTiles[0], second: newClickedTiles[1] })) 
+      setTimeout(() => {
+        dispatch(moveTiles({ board, first: newClickedTiles[0], second: newClickedTiles[1] }))
         newClickedTiles.splice(0, 2)
+      }
+      , 500)
+
+        //dispatch(moveTiles({ board, first: newClickedTiles[0], second: newClickedTiles[1] })) 
+        //newClickedTiles.splice(0, 2)
       }
     }
 
@@ -34,7 +42,6 @@ export const BoardComponent = () => {
 
   return (
     <div>
-      <button onClick={() => dispatch(initializeBoard())}>New Game</button>
       <table>
         <tbody>
           { board.tiles?.map((row, rowIndex) => (
@@ -62,7 +69,13 @@ export const BoardComponent = () => {
         </tbody>
       </table>
       {
-        wasValidMove ? <div>Valid Move</div> : <div>Invalid Move!</div>
+            board.tiles ? null :  <button onClick={() => dispatch(initializeBoard())}>New Game</button>
+      }
+      {
+        moves > 0 && !wasValidMove ? <p>Opps, invalid move!</p> : null
+      }
+      {
+        board.tiles ? <p>Moves: {moves}</p> : null
       }
     </div>
   ) 
