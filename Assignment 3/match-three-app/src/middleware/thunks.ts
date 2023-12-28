@@ -20,6 +20,12 @@ export const logoutThunk = createAsyncThunk('logout', async (_, { getState }) =>
        return await client.logout(state.userState.user.token)
 })
 
+export const changePasswordThunk = createAsyncThunk('changePassword', async (password: string, { getState }) =>
+{
+       const state = getState() as State
+       await client.patchUser(state.userState.user.id, state.userState.user.token, {password: password})
+})
+
 export const createGameThunk = createAsyncThunk('saveGame', async (_, { getState }) =>
 {
        const state = getState() as State

@@ -6,10 +6,9 @@ import { Signin } from './Signin'
 import { Board } from '../game/Board'
 import { UnfinishedGames } from '../game/UnfinishedGames'
 import { HighScores } from '../game/HighScores'
+import { Profile } from './Profile'
 
-export const LandingPage = () => {
-    const username = useSelector((state : State) => state.userState.user?.username)
-    const status = useSelector((state : State) => state.userState.status)   
+export const LandingPage = () => { 
     const user = useSelector((state : State) => state.userState.user)
     
     if (user?.token) {
@@ -17,11 +16,7 @@ export const LandingPage = () => {
             <div style={{display:'flex', justifyContent:'flex-end', marginBottom:40}}>
                 <button onClick={() => store.dispatch(logoutThunk())} className='Button'>Logout</button>
             </div>
-            <div>
-                <label> Username: {username}</label>  
-                <label> Admin: {user.admin ? "Yes" : "No"}</label>  
-                <label> Status: {status}</label>
-            </div>
+            <Profile/>
             <div>
             <Board/>
             <UnfinishedGames/>
@@ -32,4 +27,3 @@ export const LandingPage = () => {
         return <Signin/>
     }
 }
-
