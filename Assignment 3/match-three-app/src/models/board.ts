@@ -59,11 +59,9 @@ export function piece(board: Board, p: Position): string | undefined {
 export function canMove(board: Board, first: Position, second: Position): boolean {
 
     if (!belongsToSameRowOrColumn(first, second)) {
-        console.log("not same row or column")
         return false
     }
     if (!isValidPosition(board, first) || !isValidPosition(board, second)) {
-        console.log("not valid position")
         return false
     }
     return getMatches(swap(board, first, second)).length > 0
@@ -73,7 +71,6 @@ export function move(board: Board, first: Position, second: Position): MoveResul
 
     board = { ...board }
     if (!canMove(board, first, second)) {
-        console.log("can't move")
         return { board, effects: [] }
     }
 
@@ -91,8 +88,6 @@ export function move(board: Board, first: Position, second: Position): MoveResul
         }
         else
         {
-            console.log("no more matches")
-            console.log('ONE',effects )
             return { board, effects }
         }
     }
@@ -153,7 +148,6 @@ function getMatches(board: Board): Match[] {
             const lastMatch = matches[matches.length - 1]
 
             if (lastMatch?.matched === tile) {
-                console.log("match")
                 lastMatch.positions.push({ row: rowIndex, col: colIndex })
             } else {
                 matches.push({ matched: tile, positions: [{ row: rowIndex, col: colIndex }] })

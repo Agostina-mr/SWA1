@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import store, { State } from '../../app/store'
-import { logoutThunk } from '../../middleware/thunks';
-import { Signin } from './Signin';
-import { BoardComponent } from '../game/Board';
-import gameSlice, { initializeBoard } from '../game/gameSlice';
+import { logoutThunk } from '../../middleware/thunks'
+import { Signin } from './Signin'
+import { BoardComponent } from '../game/Board'
 
 export const LandingPage = () => {
     const username = useSelector((state : State) => state.userState.user?.username)
