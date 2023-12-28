@@ -7,11 +7,11 @@ import { createGameThunk, patchGameThunk } from '../../middleware/thunks'
 export const BoardComponent = () => {
   const dispatch = useDispatch()
   const token = useSelector((state: State) => state.userState.user?.token)
-  const board = useSelector((state: State) => state.gameState.board)
+  const board = useSelector((state: State) => state.gameState.game?.board)
   const wasValidMove = useSelector((state: State) => state.gameState.wasValidMove)
-  const moves = useSelector((state: State) => state.gameState.moves)
-  const score = useSelector((state: State) => state.gameState.score)
-  const completed = useSelector((state: State) => state.gameState.completed)
+  const moves = useSelector((state: State) => state.gameState.game?.moves)
+  const score = useSelector((state: State) => state.gameState.game?.score)
+  const completed = useSelector((state: State) => state.gameState.game?.completed)
 
   const [clickedTiles, setClickedTiles] = useState<{ row: number, col: number }[]>([])
 
@@ -55,7 +55,7 @@ export const BoardComponent = () => {
                   Congratulations, you won!</p>
               </div>
             ) :
-            board.tiles?.map((row, rowIndex) => (
+            board?.tiles?.map((row, rowIndex) => (
               <tr key={rowIndex}>
                 {row.map((tile, colIndex) => (
                   <td
@@ -76,7 +76,7 @@ export const BoardComponent = () => {
         </tbody>
       </table>
       {
-        board.tiles ? null : <button onClick={() => store.dispatch(createGameThunk(token))}>New Game</button>
+        board?.tiles ? null : <button onClick={() => store.dispatch(createGameThunk(token))}>New Game</button>
       }
       {
         moves > 0 && !wasValidMove ?
@@ -84,7 +84,7 @@ export const BoardComponent = () => {
           : null
       }
       {
-        board.tiles ? (
+        board?.tiles ? (
           <div className='Row'>
             <p style={{ margin: 15 }}>Moves: {moves}</p>
             <p>Score: {score}</p>

@@ -4,6 +4,7 @@ import store, { State } from '../../app/store'
 import { logoutThunk } from '../../middleware/thunks'
 import { Signin } from './Signin'
 import { BoardComponent } from '../game/Board'
+import { AllGames } from '../game/AllGames'
 
 export const LandingPage = () => {
     const username = useSelector((state : State) => state.userState.user?.username)
@@ -23,6 +24,7 @@ export const LandingPage = () => {
             </div>
             <div>
             <BoardComponent/>
+            <AllGames/>
             </div>
         </div>
     } else {

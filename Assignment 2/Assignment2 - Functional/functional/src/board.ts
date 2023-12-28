@@ -1,4 +1,3 @@
-import * as e from "express"
 
 export type Generator<T> = { next: () => T }
 
@@ -30,10 +29,16 @@ export type MoveResult<T> = {
 }
 
 export function create<T>(generator: Generator<T>, width: number, height: number): Board<T> {
-    let tiles = populate(generator, width, height)
+    let tiles = createTiles(generator, width, height)
     return { generator, width, height, tiles }
 }
+function createTiles<T>(generator: Generator<T>, width: number, height: number): T[][] {
+    return Array.from({ length: height }, () => createRow(generator, width));
+}
 
+function createRow<T>(generator: Generator<T>, width: number): T[] {
+    return Array.from({ length: width }, () => generator.next());
+}
 function populate<T>(generator: Generator<T>, width: number, height: number): T[][] {
     let tiles = populateRecursive(generator, width, height, [])
     return tiles

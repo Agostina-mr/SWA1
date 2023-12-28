@@ -1,5 +1,5 @@
-import { GameState } from '../features/game/gameSlice'
 import { User } from '../models/user'
+import { Game } from '../models/game'
 
 const callServer = async <Return>(url: string, init: RequestInit = {}): Promise<Return> => {
     const response = await fetch(url, { ...init, headers: {...init.headers, 'Accept': 'application/json', 'Content-Type': 'application/json'}})
@@ -15,6 +15,7 @@ export const signUp = async (user : User): Promise<User> => create<User , User>(
 export const login = async (user : User): Promise<User> => create<User , User>('http://localhost:9090/login', user)
 export const logout = async (token : string) => {await fetch('http://localhost:9090/logout?token=' + token, {method: 'POST'})}
 
-export const createGame = async (token : string) => create<any, GameState>('http://localhost:9090/games?token=' + token, {})
-export const patchGame = async (token : string, game : GameState) => callServer<GameState>(`http://localhost:9090/games/${game.id}?token=${token}`,
+export const createGame = async (token : string) => create<any, Game>('http://localhost:9090/games?token=' + token, {})
+export const patchGame = async (token : string, game : Game) => callServer<Game>(`http://localhost:9090/games/${game.id}?token=${token}`,
                                  {method: 'PATCH', body: JSON.stringify(game)})
+export const getGames = async (token : string) => callServer<Game[]>(`http://localhost:9090/games?token=${token}`)

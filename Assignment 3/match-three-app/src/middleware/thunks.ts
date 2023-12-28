@@ -25,6 +25,12 @@ export const createGameThunk = createAsyncThunk('saveGame', async (token: string
 
 export const patchGameThunk = createAsyncThunk('patchGame', async (_, { getState }) => 
 {
-       const state = getState() as State;
-       await client.patchGame(state.userState.user.token, state.gameState)
+       const state = getState() as State
+       await client.patchGame(state.userState.user.token, state.gameState.game)
+})
+
+export const getGamesThunk = createAsyncThunk('getGames',  async (_, { getState }) => 
+{
+       const state = getState() as State
+       return await client.getGames(state.userState.user.token)
 })
