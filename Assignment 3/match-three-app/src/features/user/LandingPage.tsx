@@ -14,15 +14,17 @@ export const LandingPage = () => {
     
     if (token) {
         return <div>
-            <div>
-                <button onClick={() => store.dispatch(logoutThunk(token))}>Logout</button>
+            <div style={{display:'flex', justifyContent:'flex-end', marginBottom:40}}>
+                <button onClick={() => store.dispatch(logoutThunk(token))} className='Button'>Logout</button>
             </div>
             <div>
                 <label> Username: {username}</label>  
                 <label> Admin: {isAdmin ? "Yes" : "No"}</label>  
                 <label> Status: {status}</label>
             </div>
+            <div>
             <BoardComponent/>
+            </div>
         </div>
     } else {
         return <Signin/>

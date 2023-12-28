@@ -6,9 +6,12 @@ import { delay } from '@reduxjs/toolkit/dist/utils'
 
 export const BoardComponent = () => {
   const dispatch = useDispatch() 
+
   const board = useSelector((state: State) => state.gameState.board) 
   const wasValidMove = useSelector((state: State) => state.gameState.wasValidMove)
   const moves = useSelector((state: State) => state.gameState.moves)
+  const score = useSelector((state: State) => state.gameState.score)
+
   const [clickedTiles, setClickedTiles] = useState<{ row: number,  col: number }[]>([]) 
 
   const handleTileClick = (row: number, col: number) => {
@@ -17,19 +20,18 @@ export const BoardComponent = () => {
 
     if ( isTileClicked(tilePosition)) {
       const index = newClickedTiles.findIndex((pos) => pos.row === row && pos.col === col) 
+
       newClickedTiles.splice(index, 1) 
+
     } else {
       newClickedTiles.push(tilePosition) 
+
       if (newClickedTiles.length === 2) {
-        // Dispatch the moveTiles action with the latest board state
       setTimeout(() => {
         dispatch(moveTiles({ board, first: newClickedTiles[0], second: newClickedTiles[1] }))
         newClickedTiles.splice(0, 2)
       }
-      , 500)
-
-        //dispatch(moveTiles({ board, first: newClickedTiles[0], second: newClickedTiles[1] })) 
-        //newClickedTiles.splice(0, 2)
+      , 200)
       }
     }
 
@@ -38,6 +40,7 @@ export const BoardComponent = () => {
 
   const isTileClicked = (position: { row: number,  col: number }) => {
     return clickedTiles.some((pos) => pos.row === position.row && pos.col === position.col) 
+
   } 
 
   return (
@@ -49,15 +52,11 @@ export const BoardComponent = () => {
               {row.map((tile, colIndex) => (
                 <td
                   key={rowIndex + '' + colIndex}
+                  className='Tile'
                   style={{
-                    height: 100,
-                    width: 100,
-                    fontSize: 50,
-                    textAlign: 'center',
-                    cursor: 'pointer',
                     backgroundColor: isTileClicked({ row: rowIndex, col: colIndex })
                       ? 'yellow'
-                      : 'transparent',
+                      :  '#d0f1f7',
                   }}
                   onClick={() => handleTileClick(rowIndex, colIndex)}
                 >
@@ -72,10 +71,17 @@ export const BoardComponent = () => {
             board.tiles ? null :  <button onClick={() => dispatch(initializeBoard())}>New Game</button>
       }
       {
-        moves > 0 && !wasValidMove ? <p>Opps, invalid move!</p> : null
+        moves > 0 && !wasValidMove ? 
+        ( <p className='Button' style={{backgroundColor:'red', textAlign:'center'}}>Opps, invalid move!</p> )
+        : null
       }
       {
-        board.tiles ? <p>Moves: {moves}</p> : null
+        board.tiles ? (
+        <div className='Row'>
+        <p style={{margin:15}}>Moves: {moves}</p>
+        <p>Score: {score}</p>
+        </div>
+        ) : null
       }
     </div>
   ) 
