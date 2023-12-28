@@ -26,15 +26,7 @@ export const userSlice = createSlice({
             return { ...state, status: 'Pending' }
         })
         builder.addCase(loginThunk.fulfilled, (state, action) => {
-            return {
-                ...state, status: 'logged in',
-                user: {
-                    username: action.payload.request.username,
-                    id: action.payload.response.id,
-                    admin: action.payload.response.admin,
-                    token: action.payload.response.token
-                } as User
-            }
+            return { ...state, status: 'logged in', user: action.payload }
         })
         builder.addCase(logoutThunk.fulfilled, (state) => {
             return { ...state, status: 'logged out', user: {} as User }

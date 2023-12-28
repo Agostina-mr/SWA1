@@ -8,7 +8,6 @@ export const Signin = () => {
     const [password, setPassword] = useState('')
 
     const status = useSelector((state : State) => state.userState.status)
-    const token = useSelector((state : State) => state.userState.user?.token)
 
     return (       
         <div className='App' style={{marginTop:200}}>
@@ -38,7 +37,7 @@ export const Signin = () => {
                 <button onClick={() => store.dispatch(loginThunk({username, password}))} className='Button'>Login</button>
             </div>
             <div>
-                <button onClick={() => store.dispatch(logoutThunk(token))} className='Button'>Logout</button>
+                <button onClick={() => store.dispatch(logoutThunk())} className='Button'>Logout</button>
             </div>
         </div>
             <div>

@@ -26,6 +26,17 @@
   font-size: 20px;
   cursor: pointer;
 }
+.Label {
+  width: 500px;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f8e113;
+  color: white;
+  border: none;
+  font-size: 20px;
+  text-align: center;
+}
 .Tile{
   margin: 10px;
   padding: 10px;

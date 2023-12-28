@@ -4,15 +4,11 @@ import store, { State } from '../../app/store'
 import { moveTiles } from './gameSlice'
 import { createGameThunk, patchGameThunk } from '../../middleware/thunks'
 
-export const BoardComponent = () => {
+export const Board = () => {
   const dispatch = useDispatch()
-  const token = useSelector((state: State) => state.userState.user?.token)
-  const board = useSelector((state: State) => state.gameState.game?.board)
-  const wasValidMove = useSelector((state: State) => state.gameState.wasValidMove)
-  const moves = useSelector((state: State) => state.gameState.game?.moves)
-  const score = useSelector((state: State) => state.gameState.game?.score)
-  const completed = useSelector((state: State) => state.gameState.game?.completed)
-
+  const game = useSelector((state: State) => state.gameState.game)
+  const invalidMove = useSelector((state: State) => state.gameState.invalidMove)
+  
   const [clickedTiles, setClickedTiles] = useState<{ row: number, col: number }[]>([])
 
   const handleTileClick = (row: number, col: number) => {
@@ -29,7 +25,7 @@ export const BoardComponent = () => {
 
       if (newClickedTiles.length === 2) {
         setTimeout(() => {
-          dispatch(moveTiles({ board, first: newClickedTiles[0], second: newClickedTiles[1] }))
+          dispatch(moveTiles({ board: game.board, first: newClickedTiles[0], second: newClickedTiles[1] }))
           newClickedTiles.splice(0, 2)
           store.dispatch(patchGameThunk())
         }, 200)
@@ -48,14 +44,14 @@ export const BoardComponent = () => {
     <div>
       <table>
         <tbody>
-          {completed ?
+          {game?.completed ?
             (
               <div>
-                <p className='Button' style={{ backgroundColor: 'green', textAlign: 'center' }}>
-                  Congratulations, you won!</p>
+                <p className='Label' style={{ backgroundColor: 'green' }}>
+                  Game over</p>
               </div>
             ) :
-            board?.tiles?.map((row, rowIndex) => (
+            game?.board?.tiles?.map((row, rowIndex) => (
               <tr key={rowIndex}>
                 {row.map((tile, colIndex) => (
                   <td
@@ -76,18 +72,21 @@ export const BoardComponent = () => {
         </tbody>
       </table>
       {
-        board?.tiles ? null : <button onClick={() => store.dispatch(createGameThunk(token))}>New Game</button>
+        game?.board?.tiles ? null : <button onClick={
+          () => {
+            store.dispatch(createGameThunk()).then(() => { store.dispatch(patchGameThunk()) })
+          }}>New Game</button>
       }
       {
-        moves > 0 && !wasValidMove ?
-          (<p className='Button' style={{ backgroundColor: 'red', textAlign: 'center' }}>Oops, invalid move!</p>)
+        !game?.completed && invalidMove ?
+          (<p className='Label' style={{ backgroundColor: 'red' }}>Oops, invalid move!</p>)
           : null
       }
       {
-        board?.tiles ? (
+        game?.board?.tiles ? (
           <div className='Row'>
-            <p style={{ margin: 15 }}>Moves: {moves}</p>
-            <p>Score: {score}</p>
+            <p style={{ margin: 15 }}>Moves: {game.moves}</p>
+            <p>Score: {game.score}</p>
           </div>
         ) : null
       }
