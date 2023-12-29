@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import store, { State } from '../../app/store'
-import { moveTiles } from './gameSlice'
+import { moveTiles } from '../slices/gameSlice'
 import { createGameThunk, patchGameThunk } from '../../middleware/thunks'
+import '../../App.css'
 
 export const Board = () => {
   const dispatch = useDispatch()
   const game = useSelector((state: State) => state.gameState.game)
   const invalidMove = useSelector((state: State) => state.gameState.invalidMove)
-  
+
   const [clickedTiles, setClickedTiles] = useState<{ row: number, col: number }[]>([])
 
   const handleTileClick = (row: number, col: number) => {
@@ -41,8 +42,8 @@ export const Board = () => {
   }
 
   return (
-    <div>
-      <table>
+    <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+      <table >
         <tbody>
           {game?.completed ?
             (
@@ -51,35 +52,45 @@ export const Board = () => {
                   Game over</p>
               </div>
             ) :
-            game?.board?.tiles?.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {row.map((tile, colIndex) => (
-                  <td
-                    key={rowIndex + '' + colIndex}
-                    className='Tile'
-                    style={{
-                      backgroundColor: isTileClicked({ row: rowIndex, col: colIndex })
-                        ? 'yellow'
-                        : '#d0f1f7',
-                    }}
-                    onClick={() => handleTileClick(rowIndex, colIndex)}
-                  >
-                    {tile}
-                  </td>
-                ))}
-              </tr>
-            ))}
+            (
+              game?.board?.tiles?.map((row, rowIndex) => (
+                <tr key={rowIndex}>
+                  {row.map((tile, colIndex) => (
+                    <td
+                      key={rowIndex + '' + colIndex}
+                      className='Tile'
+                      style={{
+                        backgroundColor: isTileClicked({ row: rowIndex, col: colIndex })
+                          ? 'yellow'
+                          : '#d0f1f7',
+                      }}
+                      onClick={() => handleTileClick(rowIndex, colIndex)}
+                    >
+                      {tile}
+                    </td>
+                  ))}
+                </tr>
+              )))}
         </tbody>
       </table>
-      {
-        game?.board?.tiles ? null : <button onClick={
-          () => {
-            store.dispatch(createGameThunk()).then(() => { store.dispatch(patchGameThunk()) })
-          }}>New Game</button>
+      {(
+        <div className='Centre'>
+          {game?.board?.tiles ? null : <button className='GameButton' onClick={
+            () => {
+              store.dispatch(createGameThunk()).then(() => {
+                store.dispatch(patchGameThunk())
+              })
+            }}> New game </button>}
+        </div>
+      )
       }
       {
         !game?.completed && invalidMove ?
-          (<p className='Label' style={{ backgroundColor: 'red' }}>Oops, invalid move!</p>)
+          (
+            <div className='Centre'>
+              <p className='Label' style={{ backgroundColor: 'red' }}>Oops, invalid move!</p>
+            </div>
+          )
           : null
       }
       {

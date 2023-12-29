@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import  userReducer,  { UserState } from '../features/user/userSlice'
-import gameReducer, { GameState } from '../features/game/gameSlice'
+import  userReducer,  { UserState } from '../features/slices/userSlice'
+import gameReducer, { GameState } from '../features/slices/gameSlice'
 
 
 export type State = { userState: UserState,

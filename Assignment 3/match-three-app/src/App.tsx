@@ -1,13 +1,13 @@
-import React from 'react';
-import './App.css';
-import { LandingPage } from './features/user/LandingPage'
+import React from 'react'
+import { Main } from './features/components/Main'
+import Layout from './Layout'
 
-function App() {
-  return (
-    <div className="App">
-      <LandingPage/>
-    </div>
-  );
+export const App = () => {
+    return (
+        <Layout>
+            <Main />
+        </Layout>
+    )
 }
 
-export default App;
+export default App

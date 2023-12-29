@@ -1,11 +1,5 @@
 .App {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  justify-items: center;
-  justify-self: center;
-  align-items: center;
+  text-align: start;
 }
 .Row {
   display: flex;
@@ -14,7 +8,7 @@
   justify-items: center;
   justify-self: center;
   align-items: center;
-  margin: 10px;
+  margin: 3px;
 }
 .Button {
   margin: 10px;
@@ -27,7 +21,7 @@
   cursor: pointer;
 }
 .Label {
-  width: 500px;
+  width: 100%;
   margin: 10px;
   padding: 10px;
   border-radius: 5px;
@@ -37,6 +31,25 @@
   font-size: 20px;
   text-align: center;
 }
+.Centre{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.Title {
+  margin: 10px;
+  margin-bottom: 25px;
+  padding: 10px;
+  color: black;
+  border: none;
+  font-size: 20px;
+  text-align: center;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-style: italic;
+  font-size: 50px;
+  font-weight: 900;
+}
+
 .Tile{
   margin: 10px;
   padding: 10px;
@@ -51,6 +64,36 @@
   text-align: center;
   font-family: 'Courier New', Courier, monospace;
 }
+
+.Tile:hover{
+  border-color: #d5cd87;
+}
+.GameButton{
+  margin: 15px;
+  padding: 15px;
+  border-radius: 90px;
+  background-color: red;
+  color: white;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  width: 180px;
+  height: 180px;
+}
+.TileSelected{
+  margin: 10px;
+  padding: 10px;
+  height: 100px;
+  width: 100px;
+  border-radius: 5px;
+  background-color: #d5cd87;
+  color: white;
+  border: none;
+  font-size: 50px;
+  cursor: pointer;
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+} 
 .App-logo {
   height: 40vmin;
   pointer-events: none;

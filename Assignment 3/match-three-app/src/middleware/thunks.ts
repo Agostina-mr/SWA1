@@ -1,4 +1,4 @@
-import * as client from '../client/client'
+import * as client from '../data/client'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { User } from '../models/user'
 import { State } from '../app/store'
