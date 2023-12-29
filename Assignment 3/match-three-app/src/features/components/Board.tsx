@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import store, { State } from '../../app/store'
-import { moveTiles } from '../slices/gameSlice'
+import { clearGame, moveTiles } from '../slices/gameSlice'
 import { createGameThunk, patchGameThunk } from '../../middleware/thunks'
 import '../../App.css'
 
@@ -98,6 +98,10 @@ export const Board = () => {
           <div className='Row'>
             <p style={{ margin: 15 }}>Moves: {game.moves}</p>
             <p>Score: {game.score}</p>
+            <div className='Centre'>
+              <div className='Button' style={{ backgroundColor: "green" }}
+                onClick={() => dispatch(clearGame())}>Back</div>
+            </div>
           </div>
         ) : null
       }
