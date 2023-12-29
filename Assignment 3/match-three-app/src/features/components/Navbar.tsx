@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { State } from '../../app/store'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
@@ -10,11 +10,14 @@ import MenuItem from '@mui/material/MenuItem'
 import Menu from '@mui/material/Menu'
 import { logoutThunk } from '../../middleware/thunks'
 import store from '../../app/store'
+import { clearGame } from '../slices/gameSlice'
 import { useNavigate } from 'react-router-dom'
 
 
 export const Navbar = () => {
+    const dispatch = useDispatch()
     const token = useSelector((state: State) => state.userState.user?.token)
+
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     const navigate = useNavigate()
 
@@ -37,6 +40,7 @@ export const Navbar = () => {
 
     const gamesAndClose = () => {
         setAnchorEl(null)
+        dispatch(clearGame())
         navigate('/')
     }
 

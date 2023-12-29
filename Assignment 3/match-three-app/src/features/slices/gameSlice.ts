@@ -26,7 +26,10 @@ export const gameSlice = createSlice({
                     completed: (state.game.moves + 1) >= 7
                 }, invalidMove: (effects.length === 0)
             }
-        }
+        },
+        clearGame: (state) => {
+            return { ...state, game: undefined }
+        }       
     },
     extraReducers: (builder) => {
         builder
@@ -46,5 +49,5 @@ export const gameSlice = createSlice({
     }
 })
 
-export const { moveTiles } = gameSlice.actions
+export const { moveTiles, clearGame } = gameSlice.actions
 export default gameSlice.reducer
