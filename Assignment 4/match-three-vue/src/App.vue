@@ -1,21 +1,32 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import Login from './components/Login.vue'
-import Board from './components/Board.vue'
+import {logout} from './data/client'
+import { store } from './data/store'
+import router from './router';
+
+async function logoutUser() {
+    try {
+        await logout(store.token)
+        store.setUser(undefined, undefined)
+    } catch (error) {
+      // ignored
+    }
+    router.push('/')
+}
+
 </script>
 
 <template>
   <header>
-    <div class="wrapper">
-      <Login />
-
+    <div v-if="!store.loggedOut()" class="wrapper">
       <nav>
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/games">Games</RouterLink>
       </nav>
+      <button @click="logoutUser()">Logout</button>
     </div>
   </header>
-  <Board />
+  <router-view />
 </template>
 
 
