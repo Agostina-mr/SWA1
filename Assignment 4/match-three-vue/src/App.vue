@@ -23,40 +23,13 @@ async function logoutUser() {
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/games">Games</RouterLink>
         <RouterLink to="/highscores">High Scores</RouterLink>
+        <RouterLink to="/profile">Profile</RouterLink>
       </nav>
       <button @click="logoutUser()">Logout</button>
     </div>
   </header>
   <router-view />
 </template>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <style scoped>
 header {

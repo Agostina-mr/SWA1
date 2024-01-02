@@ -24,6 +24,11 @@ const router = createRouter({
       path: '/highscores',
       name: 'highscores',
       component: () => import('../components/HighScores.vue')
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('../components/Profile.vue')
     }
   ]
 })

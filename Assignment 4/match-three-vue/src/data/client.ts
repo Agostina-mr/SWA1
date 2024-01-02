@@ -15,7 +15,7 @@ export const signUp = async (user: User): Promise<User> => create<User, User>('h
 export const login = async (user: User): Promise<Login> => create<User, Login>('http://localhost:9090/login', user)
 export const getUser = async (id: number, token: string) => callServer<User>(`http://localhost:9090/users/${id}?token=${token}`)
 export const logout = async (token: string) => { await fetch('http://localhost:9090/logout?token=' + token, { method: 'POST' }) }
-export const patchUser = async (id: number, token: string, user: User) => callServer<User>(`http://localhost:9090/users/${id}?token=${token}`, { method: 'PATCH', body: JSON.stringify(user) })
+export const patchUser = async (id: number, token: string, user: User) => { await fetch(`http://localhost:9090/users/${id}?token=${token}`, { method: 'PATCH', headers: {'Content-Type': 'application/json' }, body: JSON.stringify(user) }) }
 
 export const createGame = async (token: string) => create<any, Game>('http://localhost:9090/games?token=' + token, {})
 export const patchGame = async (token: string, game: Game) => callServer<Game>(`http://localhost:9090/games/${game.id}?token=${token}`,
